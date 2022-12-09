@@ -1,0 +1,24 @@
+version: "3.7"
+services:
+  database:
+    image: postgres
+    container_name: go-db
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./data:/var/lib/postgresql/data
+  server:
+    container_name: go-server
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    depends_on:
+      - database 
+    ports:
+    - "3000:3000"
